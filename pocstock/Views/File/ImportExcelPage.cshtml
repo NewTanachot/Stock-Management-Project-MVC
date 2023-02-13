@@ -1,0 +1,20 @@
+﻿@{
+    //ViewData["Title"] = "Trash bills";
+    Layout = null;
+}
+
+<div class="row">
+    <form method="post" asp-controller="File" asp-action="ImportExcelFile" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Upload Excel File (อัพโหลดไฟล์ Excel ของข้อมูลทั้งหมด)</label>
+            <input class="form-control" type="file" name="ExcelFile" accept=".xlsx" required>
+        </div>
+        <br>
+        <p class="text-danger">* โปรแกรมจะทำการลบข้อมูลทั้งหมด แล้วใส่ข้อมูลใน Excel ลงไปแทน โปรดตรวจสอบข้อมูลในไฟล์ว่าถูกต้องหรือไม่ก่อน Upload</p>
+        @*<p class="text-danger">* โปรแกรมจะไม่ทำการใส่ข้อมูลประวัติสินค้า และ ประวัติสถานะบิล เข้าไปในโปรแกรม</p>*@
+        <hr>
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">Upload</button>
+        </div>
+    </form>
+</div>

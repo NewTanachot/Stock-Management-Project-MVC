@@ -1,0 +1,24 @@
+﻿@model JobDetail
+
+@{
+    ViewData["Title"] = "Delete Bill";
+    Layout = null;
+
+    string TableColor = string.Empty;
+}
+
+<div class="row">
+    <div>
+        <form method="post" asp-controller="JobDetail" asp-action="SetDeleteJob" asp-route-JobId="@Model.JobId">
+            <div>
+                <h5>ต้องการลบบิล <span class="text-danger">@Model.JobId </span> ออกจากระบบใช่หรือไม่ ?</h5>
+                <br />
+                <p class="text-danger">* สามารถกู้คืนข้อมูลบิลนี้ได้ในถังขยะ</p>
+                <hr>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-danger">ยืนยัน</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

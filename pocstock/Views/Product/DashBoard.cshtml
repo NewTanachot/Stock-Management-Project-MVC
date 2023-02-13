@@ -1,0 +1,144 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Product Preview";
+}
+
+<div id="ProductPreview">
+    <div class="card rounded shadow-sm">
+        <div class="card-header text-center" style="background-color: #C41E3A">
+            <h3 class="m-0 text-white">จัดการตารางสินค้า</h3>
+            <p class="m-0 text-white">Product Table</p>
+        </div>
+        <div class="card-body" style="background-color: #fff7e6">
+            <div class="row">
+                <div class="col-md-4 my-md-0 my-2 text-md-start align-self-md-center text-center">
+                    <span class="text-danger bg-warning bg-opacity-25 p-2 h5">Tip : ชี้ที่ชื่อสินค้าเพื่อดูจำนวนสินค้า</span>
+                </div>
+                <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-center text-center border bg-primary bg-opacity-10 shadow-sm">
+                    <h4 class="py-2 m-0">สินค้าทั้งหมด : <span class="text-danger">@Model.Count</span> อย่าง</h4>
+                </div>
+                <div class="col-md-4 align-self-md-center">
+                    <div class="row">
+                        <div class="col-md-2 my-md-0 my-1 text-md-start text-center">
+                            <a onclick="ShowInLargePopup('@Url.Action("TrashProduct", "Product")', 'ถังขยะ (สินค้า)')" class="btn btn-outline-secondary border-0" style="font-size:24px;">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-10 my-md-0 my-1 text-md-end text-center">
+                            <a onclick="ShowInPopup('@Url.Action("CreateProduct", "Product")', 'เพิ่มสินค้าใหม่')" class="btn btn-success bi bi-folder-plus shadow" style="font-size:24px;"> เพิ่มสินค้า</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    @if (TempData.ContainsKey("ProductSuccess"))
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["ProductSuccess"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close" action=""></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("ProductDanger"))
+    {
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["ProductDanger"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("ProductDelete"))
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["ProductDelete"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("ProductRestore"))
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["ProductRestore"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+<table id="ProductTable" class = "table table-bordered shadow-sm" style="background-color: #fff7e6; width:100%;">
+    <thead class="text-white" style="background-color: #C41E3A">
+@*        <tr class="align-middle">
+            <th class="text-center fw-normal">
+                ID
+            </th>
+            <th class="text-center col-6 fw-normal">
+                ชื่อสินค้า
+            </th>
+            <th class="text-center col-1 fw-normal">
+                ซื้อ <br>(บาท)
+            </th>
+            <th class="text-center col-1 fw-normal">
+                ขาย <br>(บาท)
+            </th>
+            <th class="text-center col-3 fw-normal">
+                อัพเดทล่าสุด
+            </th>
+            <th class="text-center col-1 fw-normal">
+                แก้ไข
+            </th>
+        </tr>*@
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+@*            <tr>
+                <th class="align-middle">
+                    <span title="สิ้นค้าคงเหลือ @item.ProductCount ชิ้น">@item.Id</span> 
+                </th>
+                <td class="text-break">
+                    @if (item.ProductCount == 0)
+                    {
+                        <span class="text-danger" title="สิ้นค้าคงเหลือ @item.ProductCount ชิ้น">@item.Name</span>
+                        <span class="text-primary"> &nbsp;*หมด</span>
+                    }
+                    else
+                    {
+                        <span title="สิ้นค้าคงเหลือ @item.ProductCount ชิ้น">@item.Name</span>
+                    }
+                </td>
+                <th class="text-center align-middle text-break">
+                    @string.Format("{0:n0}", item.CostPrice)
+                    <span hidden>@item.CostPrice</span>
+                </th>
+                <th class="text-center align-middle text-break">
+                    @string.Format("{0:n0}", item.SellingPrice)
+                    <span hidden>@item.SellingPrice</span>
+                </th>
+                <td class="text-center align-middle text-break">
+                    @item.StringDisplayDate
+                </td>
+                <td class="align-middle">
+                    <div style="display:inline-flex;">
+                        <a onclick="ShowInPopup('@Url.Action("EditProduct", "Product", new {id = item.Id})', 'แก้ไขรายละเอียดสินค้า')" class="btn btn-outline-primary border-0 fa-regular fa-pen-to-square" style="margin-right:5px;"></a>
+                        <a onclick="ShowInPopup('@Url.Action("DeleteProduct", "Product", new {id = item.Id})', 'ลบสินค้าออกจากระบบ')" class="btn btn-outline-danger border-0 fa-regular fa-trash-can"></a>
+                    </div>
+                </td>
+            </tr>*@
+        }
+    </tbody>
+</table>
+</div>

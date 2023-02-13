@@ -1,0 +1,47 @@
+﻿@model Stock
+
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = null;
+    //int addNumber = 0;
+}
+
+<div class="row">
+    <div class="row">
+        <div class="col">
+            <input class="form-control" value="@Model.Number" disabled>
+        </div>
+        <div class="col">
+            <select id="SelectOperator" class="form-select" onchange="AddSum('@Model.Number')">
+                <option value="+" selected>+</option>
+                <option value="-">-</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" id="ClickForCalculationSum" onkeyup="AddSum('@Model.Number')" />
+        </div>
+    </div>
+    <div class="row text-center mt-4">
+        <h3 class="col text-end">=&nbsp;&nbsp; <span id="calculation" class="text-success">@Model.Number</span> ชิ้น</h3>
+        <form class="col text-end" method="post" asp-controller="Stock" asp-action="AddStock" asp-route-id="@Model.Id">
+            <input type="hidden" id="ResultNumber" name="ResultNumber">
+            <button type="submit" class="btn btn-success shadow"><i class="fa-regular fa-floppy-disk"></i> บันทึก</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    #ClickForCalculationSum::-webkit-outer-spin-button,
+    #ClickForCalculationSum::-webkit-inner-spin-button
+    {
+       -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+ @*onchange="this.form.submit();"*@

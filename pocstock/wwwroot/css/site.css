@@ -1,0 +1,79 @@
+html {
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+* {
+    /*font-family: 'Prompt', sans-serif;*/
+    /*font-family: 'Itim', cursive;*/
+
+    font-family: 'Athiti', sans-serif;
+    /*font-weight: bold;*/
+}
+
+#myTable_info {
+    /*visibility: hidden;*/
+}
+
+.page-item.active .page-link {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.nav-link {
+    border-radius: 5px;
+    color: white !important;
+}
+
+.nav-link:hover, .active {
+    border-radius: 5px;
+    color: #C41E3A !important;
+    background-color: whitesmoke;
+}
+
+#JobDetailLink:hover {
+    text-decoration-line: underline !important;
+}
+
+@media print {
+    #PrintContent {
+        display: block !important;
+    }
+
+/*    body {
+        -webkit-print-color-adjust: exact;
+    }*/
+
+    /*header {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }*/
+}
+
+.FontforPrinting {
+    font-weight: normal;
+    font-family: 'Sarabun', sans-serif;
+    /*font-family: 'Prompt', sans-serif;*/
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+}

@@ -1,0 +1,55 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = null;
+}
+
+<div class="row">
+    <div>
+        <form asp-controller="Product" asp-action="EditProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">ชื่อสินค้า :</label>
+                <input asp-for="Name" class="form-control" required readonly/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="CostPrice" class="control-label">ราคาซื้อ : </label>
+                <input asp-for="CostPrice" class="form-control" required readonly/>
+                <span asp-validation-for="CostPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="SellingPrice" class="control-label">ราคาขาย : </label>
+                <input asp-for="SellingPrice" class="form-control" required readonly/>
+                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="StringDisplayDate" class="control-label">วันที่อัพเดทล่าสุด : </label>
+                <input asp-for="StringDisplayDate" class="form-control" readonly/>
+                <span asp-validation-for="StringDisplayDate" class="text-danger"></span>
+            </div>
+            <br>
+            <hr>
+            <div class="form-group text-end">
+                <a id="DeleteProduct" onclick="ShowInPopup('@Url.Action("DeleteProduct", "Product", new {id = Model.Id})', 'ลบสินค้าออกจากระบบ')" class="btn btn-danger">
+                    <i class="fa-regular fa-trash-can"></i> ลบสินค้า
+                </a>
+                <a id="EnableEditProduct" class="btn btn-primary opacity-75" onclick="ToggleProductEditor('Enable')">
+                    <i class="fa-regular fa-pen-to-square"></i> แก้ไขสินค้า
+                </a>
+                <a id="DisableEditProduct" class="btn btn-secondary" onclick="ToggleProductEditor('Disable')" hidden>
+                    <i class="fa-solid fa-xmark"></i> ยกเลิก
+                </a>
+                <button id="EditProductSubmit" type="submit" class="btn btn-success" hidden><i class="fa-regular fa-floppy-disk"></i> บันทึก</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

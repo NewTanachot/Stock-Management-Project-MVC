@@ -1,0 +1,118 @@
+﻿@model List<JobHistoryLog>
+
+@{
+    ViewData["Title"] = "BillHistory Preview";
+
+    //string ColumnColor = string.Empty;
+
+    //int StatusFilter = 0;
+    //int MonthFilter = 0;
+}
+
+<div id="JobHistory">
+    <div class="card rounded shadow-sm">
+        <div class="card-header text-center" style="background-color: #C41E3A">
+            <h3 class="m-0 text-white">ตารางแสดงประวัติบิล</h3>
+            <p class="m-0 text-white">Bill History Table</p>
+        </div>
+        <div class="card-body" style="background-color: #fff7e6">
+            <form method="get" asp-controller="History" asp-action="JobHistoryPreview">
+                <div class="row">
+                    <div class="col-md-4 my-md-0 my-1 align-self-md-center text-md-start text-center">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <select class="form-select form-select-lg" id="StatusFilter" onchange="DisplayJobHistoryTable()">
+                                    @{
+                                        var JobStatus = TempData["StatusForJobHistory"] as List<JobStatus>;
+
+                                        if (JobStatus != null)
+                                        {
+                                                                    <option value="0">แสดงทุกสถานะ</option>
+
+                                            foreach (var item in JobStatus)
+                                            {
+                                                                        <option value="@item.JobStatusId">@item.JobStatusName</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                                                    <option class="text-danger">Status Error!!</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-center text-center border bg-primary bg-opacity-10 shadow-sm">
+                        <h4 class="m-0 py-2">รวม : <span id="JobHistoryCount" class="text-danger"></span> transactions</h4>
+                    </div>
+                    <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-end text-center">
+                        <div class="row">
+                            <div class="col-lg-6"></div>
+                            <div class="col-lg-6">
+                                <select class="form-select form-select-lg" id="MonthFilter" onchange="DisplayJobHistoryTable()">
+                                    <option value="1">1 เดือน</option>
+                                    <option value="3">3 เดือน</option>
+                                    <option value="6">6 เดือน</option>
+                                    <option value="12">1 ปี</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br >
+
+<table id="JobHistoryTable" class = "table table-sm table-borderless table-hover shadow" style="background-color: #fff7e6; width: 100%;";>
+    <thead class="text-white" style="background-color: #C41E3A">
+        <tr class="align-middle">
+            <th class="col-5 text-center fw-normal">
+                ชื่อบิล
+            </th>
+            <th class="col-2 text-center fw-normal">
+                สถานะ
+            </th>
+            <th class="col-2 text-center fw-normal">
+                จำนวนสิ้นค้าในบิล <br> (ชิ้น)
+            </th>
+            <th class="col-3 text-center fw-normal">
+                เวลา
+            </th>
+        </tr>
+    </thead>
+@*    <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.ActionId == 5)
+                {
+                    ColumnColor = "table-success";
+                }
+                else if (item.ActionId == 1)
+                {
+                    ColumnColor = "table-secondary";
+                }
+                else
+                {
+                    ColumnColor = "table-warning";
+                }
+
+            <tr >
+                <td class="text-break">
+                    @item.JobName
+                </td>
+                <td class="text-center align-middle text-break @ColumnColor">
+                    @item.ActionName
+                </td>
+                <td class="text-center align-middle text-break">
+                    @item.StringDisplayDate
+                </td>
+            </tr>
+
+            ColumnColor = string.Empty;
+        }
+    </tbody>*@
+</table>
+</div>

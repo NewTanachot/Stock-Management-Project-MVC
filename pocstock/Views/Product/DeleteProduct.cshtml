@@ -1,0 +1,27 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "DeleteProduct";
+    Layout = null;
+}
+
+<div class="row">
+    <div>
+        <form method="get" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id">
+            <div>
+                <h5>ต้องการลบข้อมูลสินค้า <span class="text-danger">@Model.Name </span> ออกจากระบบใช่หรือไม่ ?</h5>
+                <br />
+                @*<p class="text-danger">* ระบบจะไม่สามารถกู้คืนข้อมูลสินค้านี้ได้อีก</p> *@
+                <p class="text-danger">* สามารถกู้คืนข้อมูลสินค้านี้ได้ในถังขยะ</p> 
+                <hr>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-danger">ยืนยัน</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,100 @@
+﻿@model List<Stock>
+
+@{
+    ViewData["Title"] = "Stock Update";
+
+    string ProductObject = string.Empty;
+}
+
+<div id="StockEdit">
+    <div class="card rounded shadow-sm">
+        <div class="card-header text-center" style="background-color: #C41E3A">
+            <h3 class="m-0 text-white">จัดการสต็อกสินค้า</h3>
+            <p class="m-0 text-white">Edit Stock Table</p>
+        </div>
+
+        <div class="card-body" style="background-color: #fff7e6">
+            <div class="row">
+                <div class="col-md-4 my-md-0 my-2 text-md-start align-self-md-center text-center">
+                    <a class="btn btn-secondary shadow" style="font-size:24px;" asp-controller="Stock" asp-action="StockPreview" asp-route-Toggle="Disable">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> กลับหน้าหลัก
+                    </a>
+                </div>
+                <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-center text-center border bg-primary bg-opacity-10 shadow-sm">
+                    <h4 class="py-2 m-0">สินค้าทั้งหมด : <span class="text-danger">@Model.Count</span> อย่าง</h4>
+                </div>
+                <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-end text-center">
+                    <form method="post" asp-controller="Stock" asp-action="UpdateStock">
+                        <input type="hidden" class="bg-warning bg-opacity-25" asp-for="@ProductObject">
+                        <button type="submit" class="btn btn-success shadow" style="font-size:24px;"><i class="fa-regular fa-floppy-disk"></i> บันทึก / กลับหน้าหลัก</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    @if (TempData.ContainsKey("StockSuccess"))
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["StockSuccess"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close" action=""></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("StockDanger"))
+    {
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["StockDanger"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+<table id="EditStockTable" class = "table shadow-sm" style="background-color: #fff7e6">
+    <thead class="text-white" style="background-color: #C41E3A">
+        <tr class="align-middle">
+            <th class="text-center col-7 fw-normal">
+                ชื่อสินค้า
+            </th>
+            <th class="text-center col-2 fw-normal">
+                จำนวนสินค้า <br> (ชิ้น)
+            </th>
+            <th class="text-center col-3 fw-normal">
+                อัพเดทล่าสุด
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            string EditId = "EditId" + item.Id;
+            string TableColor = string.Empty;   
+
+            if (item.Number == 0) {
+                TableColor = "table-danger opacity-75";      
+            }
+
+            <tr class="@TableColor">
+                <td class="text-break align-middle">
+                    @item.Name
+                </td>
+                <td  class="text-center align-middle text-break">
+                    <input type="number" id="@EditId" value="@item.Number" class="form-control form-control-sm fw-bold" onchange="EditStockInputForm(@item.Id)" />
+                </td>
+                <td class="text-center align-middle text-break">
+                    <span hidden>@item.StockTime</span>
+                    @item.StringDisplayDate
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+ @*<a href="/Test/?Id=@item.Id&num=@item.Number" class="btn btn-primary btn-success">Add</a>*@

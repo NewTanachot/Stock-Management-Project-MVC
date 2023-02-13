@@ -1,0 +1,18 @@
+﻿@{
+    //ViewData["Title"] = "Trash bills";
+    Layout = null;
+}
+
+<div class="row">
+    <form method="get" asp-controller="File" asp-action="GenerateExcelFile">
+        <div>
+            <h5>ต้องการ Backup ข้อมูลทั้งหมดเป็นไฟล์ Excel .xlsx ?</h5>
+            <br />
+            <p class="text-danger">* ไม่แนะนำให้แก้ไขฟอร์แมตของไฟล์ที่ดาวน์โหลดไป เนื่องจากอาจมีปัญหาเวลาอัพโหลดเข้ามาในโปรแกรมได้</p>
+            <hr>
+            <div class="text-end">
+                <button type="submit" class="btn btn-success" onclick="CloseFileModal()">Backup</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,33 @@
+﻿@model List<JobDetail>
+
+@{
+    ViewData["Title"] = "Trash bills";
+    Layout = null;
+}
+
+<div class="row">
+    <div>
+        <table id="JobTrashTable" class="table table-bordered">
+            <thead>
+                <tr class="table-secondary text-center">
+                    <th class="col">ราบการบิลในถังขยะ</th>
+                    <th class="col">วันที่สร้างบิล</th>
+                    <th class="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr> 
+                        <td class="col-4 text-start pt-2 text-secondary align-middle">@item.JobId</td>
+                        <td class="col-4 text-center pt-2 text-secondary align-middle">@item.StringDisplayDate</td>
+                        <td class="col-4 text-center align-middle">
+                            <a class="btn btn-outline-primary" asp-controller="JobDetail" asp-action="JobDetailPreview" asp-route-JobId="@item.JobId"> รายละเอียด</a>
+                            <a class="btn btn-success" asp-controller="JobDetail" asp-action="RestoreJob" asp-route-JobId="@item.JobId"><i class="fa-solid fa-recycle"></i> กู้คืนบิล</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

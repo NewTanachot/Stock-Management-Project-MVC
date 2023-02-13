@@ -1,0 +1,71 @@
+﻿@model List<Stock>
+
+@{
+    ViewData["Title"] = "Stock Update";
+    Layout = null;
+
+    string TableColor = string.Empty;
+}
+
+<div class="row">
+    <div>
+        <table id="StockModal" class="table table-sm table-hover">
+            <thead>
+                <tr class="table-success">
+                    <th>
+                        <div class="row">
+                            <div class="col-8">
+                                ชื่อสินค้า
+                            </div>
+                            <div class="col-2 text-center">
+                                คงเหลือ
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Number <= 1)
+                    {
+                        TableColor = "table-warning";
+                    }
+                    else
+                    {
+                        TableColor = string.Empty;
+                    }
+
+                    <tr class="@TableColor"> 
+                        <td>                            
+                            <div class="row">
+                                <div class="col-8 text-start pt-1">
+                                    @item.Name
+                                </div>
+                                <div class="col-2 text-center pt-1">
+                                    @item.Number ชิ้น
+                                </div>
+                                <div class="col-2 text-end">
+                                    @*<a class="btn btn-sm btn-success" asp-controller="JobDetail" asp-action="AddStockCreateJob" asp-route-id="@item.Id">*@
+                                    <a class="btn btn-sm btn-outline-success" onclick="ChooseProduct(@item.Id, 'UpdateJob')">
+                                        <i class="bi bi-cart2"></i> เพิ่มสินค้าเข้าบิล
+                                    </a>
+                                </div>
+                            </div>
+                        </td>   
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*<a class="btn btn-primary" onclick="ChooseProduct(@Url.Action("AddStockCreateJob", "JobDetail", new {id = "111"}))">test</a>*@
+    </div>
+</div>
+
+<script>
+    $('#StockModal').DataTable({
+        "order": [0, "asc"], //or asc
+        paging: false,
+        info: false
+    });
+</script>

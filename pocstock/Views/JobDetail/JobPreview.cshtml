@@ -1,0 +1,131 @@
+﻿@model List<JobDetail>
+
+@{
+    ViewData["Title"] = "Bills Preview";
+}
+
+<div id="JobPreview">
+    <div class="card rounded shadow-sm">
+        <div class="card-header text-center" style="background-color: #C41E3A">
+            <h3 class="m-0 text-white">รายการบิล</h3>
+            <p class="m-0 text-white">Bill Table</p>
+        </div>
+        <div class="card-body" style="background-color: #fff7e6">
+            <div class="row">
+                <div class="col-md-4 my-md-0 my-2 text-md-start align-self-md-center text-center">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <select class="form-select form-select-lg" id="JobStatusSelector" onchange="DisplayJobTable()">
+                                @{
+                                    var JobStatus = TempData["JobStatus"] as List<JobStatus>;
+
+                                    if (JobStatus != null)
+                                    {
+                                        <option value=0>แสดงทุกสถานะ</option>
+
+                                        foreach (var item in JobStatus)
+                                        {
+                                            <option value=@item.JobStatusId>@item.JobStatusName</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option class="text-danger">Status Error!!</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-4"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-center text-center border bg-primary bg-opacity-10 shadow-sm">
+                     <h4 class="py-2 m-0">บิลทั้งหมด : <span id="JobCount" class="text-danger"></span> ใบ</h4>
+                </div>
+                <div class="col-md-4 my-md-0 my-1 align-self-md-center">
+                    <div class="row">
+                        <div class="col-md-2 text-md-start text-center">
+                            <a onclick="ShowInLargePopup('@Url.Action("TrashPreview", "JobDetail")', 'ถังขยะ (บิล)')" class="btn btn-outline-secondary border-0" style="font-size:24px;">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-10 text-md-end text-center">
+                            <a asp-controller="JobDetail" asp-action="CreateJob" class="btn btn-success shadow" style="font-size:24px;">
+                                <i class="fa-sharp fa-solid fa-file-invoice"></i> เปิดบิลใหม่
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br >
+
+    @if (TempData.ContainsKey("CreateJobSuccess"))
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["CreateJobSuccess"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close" action=""></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("DeleteJobSuccess"))
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["DeleteJobSuccess"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("RestoreJobSuccess"))
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["RestoreJobSuccess"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close" action=""></button>
+        </div>
+    }
+
+    @if (TempData.ContainsKey("RestoreJobFail"))
+    {
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+            <div class="flex-grow-1">
+                @Html.Raw(TempData["RestoreJobFail"])
+            </div>
+            <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+<table id="JobTable" class = "table table-hover shadow-sm" style="background-color: #fff7e6; width:100%;">
+    <thead class="text-white" style="background-color: #C41E3A">
+        <tr>
+            <td class="text-center col-2 ">
+                ชื่อบิล
+            </td>
+            <td class="text-center col-2 ">
+                บริษัท
+            </td>
+            <td class="text-center col-2 ">
+                ลูกค้า
+            </td>
+            <td class="text-center col-2 ">
+                สถานะ
+            </td>
+            <td class="text-center col-2 ">
+                วันที่สร้าง
+            </td>
+            <td class="text-center col-2 ">
+                รายละเอียด
+            </td>
+        </tr>
+    </thead>
+</table>
+</div>

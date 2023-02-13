@@ -1,0 +1,90 @@
+﻿@model List<StockHistoryLog>
+
+@{
+    ViewData["Title"] = "StockHistory Preview";
+}
+
+<div id="StockHistory">
+    <div class="card rounded shadow-sm">
+        <div class="card-header text-center" style="background-color: #C41E3A">
+            <h3 class="m-0 text-white">ตารางแสดงประวัติสต๊อก</h3>
+            <p class="m-0 text-white">Stock History Table</p>
+        </div>
+        <div class="card-body" style="background-color: #fff7e6">
+            <form method="get" asp-controller="History" asp-action="HistoryPreview">
+                <div class="row">
+                    <div class="col-md-4 my-md-0 my-1 align-self-md-center text-md-start text-center">
+                        <div class="form-check form-check-inline me-md-2">
+                            <input class="form-check-input" type="checkbox" id="IncreaseCheckbox" onchange="DisplayHistoryTable()" checked>
+                            <label class="form-check-label" for="IncreaseCheckbox">เพิ่มสินค้า</label>
+                        </div>
+                        <div class="form-check form-check-inline me-md-2">
+                            <input class="form-check-input" type="checkbox" id="DecreaseCheckbox" onchange="DisplayHistoryTable()" checked>
+                            <label class="form-check-label" for="DecreaseCheckbox">ลดสินค้า</label>
+                        </div>
+                        <div class="form-check form-check-inline me-md-2">
+                            <input class="form-check-input" type="checkbox" id="AddCheckbox" onchange="DisplayHistoryTable()" checked>
+                            <label class="form-check-label" for="AddCheckbox">สร้าง/ลบสินค้า</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-center text-center border bg-primary bg-opacity-10 shadow-sm">
+                        <h4 class="m-0 py-2">รวม : <span id="HistoryCount" class="text-danger">@*@Model.Count*@</span> transactions</h4>
+                    </div>
+                    <div class="col-md-4 my-md-0 my-2 align-self-md-center text-md-end text-center">
+                        <div class="row">
+                            <div class="col-lg-6"></div>
+                            <div class="col-lg-6">
+                                <select class="form-select form-select-lg" id="MonthFilter" onchange="DisplayHistoryTable()">
+                                    <option value="1">1 เดือน</option>
+                                    <option value="3">3 เดือน</option>
+                                    <option value="6">6 เดือน</option>
+                                    <option value="12">1 ปี</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br >
+
+<table id="HistoryTable" class = "table table-sm table-borderless table-hover shadow" style="background-color: #fff7e6; width: 100%;">
+    <thead class="text-white" style="background-color: #C41E3A">
+        <tr class="align-middle">
+            <th class="col-4 text-center fw-normal">
+                ชื่อสินค้า
+            </th>
+            <th class="col-2 text-center fw-normal">
+                กิจกรรม
+            </th>
+            <th class="col-1 text-center fw-normal">
+                จำนวน <br> (ชิ้น)
+            </th>
+            <th class="col-3 text-center fw-normal">
+                ดำเนินการในบิล
+            </th>
+            <th class="col-2 text-center fw-normal">
+                เวลา
+            </th>
+        </tr>
+
+@*        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>*@
+    </thead>
+@*        <tfoot>
+            <tr>
+                <th>ชื่อสินค้า</th>
+                <th>กิจกรรม</th>
+                <th>จำนวน <br> (ชิ้น)</th>
+                <th>ดำเนินการในบิล</th>ห
+                <th>เวลา</th>
+            </tr>
+        </tfoot>*@
+</table>
+</div>

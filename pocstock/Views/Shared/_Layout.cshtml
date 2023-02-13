@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TJP Trading - @ViewData["Title"]</title>
+
+        @*Title Icon*@
+        <link rel="icon" href="~/img/TJP.png" type="image/x-icon">
+
+        @*Local Boostrap *@
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        @*<link rel="stylesheet" href="~/stocktest.styles.css" asp-append-version="true" />*@
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        @*Bootstrap Icon*@
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+        @*FontAwesome Icon *@
+        <script src="https://kit.fontawesome.com/c362d9890c.js" crossorigin="anonymous"></script>
+
+        @*
+        font-family: 'Athiti', sans-serif;
+        font-family: 'Chakra Petch', sans-serif;
+        font-family: 'Itim', cursive;
+        font-family: 'Prompt', sans-serif;
+        font-family: 'Sarabun', sans-serif;
+        font-family: 'Sriracha', cursive;
+        *@
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Athiti&family=Chakra+Petch&family=Itim&family=Prompt&family=Sarabun&family=Sriracha&display=swap" rel="stylesheet">
+
+        @*DataTable Boostrap*@
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    </head>
+        @*#fff7e6*@
+        @*#C41E3A*@
+        @*#663366*@
+    <body style="background-color:#F5F5F5;">
+        <header class="sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #C41E3A;">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img class="rounded" src="~/img/TJP.png" height="50" /></a>
+                    <a class="mx-3 h5 text-white text-decoration-none" asp-controller="Home" asp-action="Index">TJP Trading</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapse">
+                        <ul class="navbar-nav me-auto text-nowrap">
+@*                            <li class="nav-item mx-3">
+                                <a id="navbar" class="nav-link h5 @TempData["ProductActive"]" asp-area="" asp-controller="Product" asp-action="DashBoard">จัดการสินค้า</a>
+                            </li>*@
+                            <li class="nav-item mx-3">
+                                <a id="navbar" class="nav-link h5 @TempData["StockActive"]" asp-area="" asp-controller="Stock" asp-action="StockPreview">รายการสินค้า</a>
+                            </li>
+                            <li class="nav-item mx-3">
+                                <a id="navbar" class="nav-link h5 @TempData["JobDetailActive"]" asp-area="" asp-controller="JobDetail" asp-action="JobPreview">รายการบิล</a>
+                            </li>
+                            <li class="nav-item mx-3">
+                                <a id="navbar" class="nav-link h5 @TempData["StockHistoryActive"]" asp-area="" asp-controller="History" asp-action="HistoryPreview">ประวัติสต๊อก</a>
+                            </li>
+                            <li class="nav-item mx-3">
+                                <a id="navbar" class="nav-link h5 @TempData["JobHistoryActive"]" asp-area="" asp-controller="History" asp-action="JobHistoryPreview">ประวัติสถานะบิล</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="py-3">
+                @RenderBody()
+            </main>
+        </div>
+        <footer class="border-top text-muted footer w-100" style="background-color: whitesmoke;">
+            <div>
+                &nbsp;&copy; 2022 - TJP Trading - Develop by Dev as New -
+                &nbsp;&nbsp;<i class="fa-brands fa-square-facebook"></i> : <a id="Link" class="text-decoration-none" href="https://www.facebook.com/profile.php?id=100087205764882" target="_blank">Dev as New</a>
+                &nbsp;&nbsp;<i class="fa-brands fa-line"></i> : new25432000
+                &nbsp;&nbsp;<i class="fa-solid fa-phone"></i> : <a href="tel:094-4913857" class="text-decoration-none">094-4913857</a>
+            </div>
+        </footer>
+
+        @*Modal*@
+        <div class="modal fade" tabindex="-1" id="form-modal">
+            <div id="modal-dialog" class="modal-dialog modal-dialog-centered modal-dialog-scrollable rounded">
+                <div class="modal-content bg-light">
+                    <div class="modal-header text-light" style="background-color: #C41E3A;">
+                        <h4 class="modal-title"></h4>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #fff7e6;"></div>
+                </div>
+            </div>
+        </div>
+
+        @*ICON*@
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+            </symbol>
+        </svg>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @*Jquery and DataTable*@
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        @*printThis.js*@
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.min.js" integrity="sha512-d5Jr3NflEZmFDdFHZtxeJtBzk0eB+kkRXWFQqEc1EKmolXjHm2IKCA7kTvXBNjIYzjXfD5XzIjaaErpkZHCkBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

@@ -1,0 +1,96 @@
+﻿@model CreateJobDetail
+
+@{
+    ViewData["Title"] = "Create Bill";
+}
+
+<div id="CreateJob">
+    <div class="card rounded shadow">
+        <div class="card-header" style="background-color: #C41E3A">
+            <div class="text-white text-center">
+                <h3 class="m-0">เปิดบิลใหม่</h3>
+                <p class="m-0">CREATE BILL</p>
+            </div>
+        </div>
+        <div class="card-body" style="background-color: #fff7e6">
+            <form class="m-4" method="post" asp-controller="JobDetail" asp-action="UpdateJobDetail">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="JobId">หมายเลขบิล <span class="text-danger">*</span> : </label>
+                        <input class="form-control" type="text" asp-for="JobId" readonly>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="JobDescription">รายละเอียดบิล : </label>
+                        <input class="form-control" type="text" asp-for="JobDescription" autocomplete="off">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="JobWage">ค่าแรง [ บาท ] <span class="text-danger">*</span> : </label>
+                        <input id="JobWage" class="form-control" type="number" value="0" asp-for="JobWage" autocomplete="off" min="0" onchange="AddWagePrice('CreateJob')">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="CompanyName">บริษัท (หากไม่มีโปรดข้าม) : </label>
+                        <input class="form-control" type="text" asp-for="CompanyName" autocomplete="off" onchange="FindCompanyInfo(this.value)">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="CustomerName">ลูกค้า : </label>
+                        <input class="form-control" type="text" asp-for="CustomerName" autocomplete="off" onchange="FindCustomerInfo(this.value)">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="CustomerPhoneNumber">โทร : </label>
+                        <input class="form-control" type="number" min="0" autocomplete="off" asp-for="CustomerPhoneNumber" onchange="StyleRemove(this.id)">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-dark" asp-for="TaxId">เลขผู้เสียภาษี : </label>
+                        <input class="form-control" type="number" min="0" autocomplete="off" asp-for="TaxId" onchange="StyleRemove(this.id)">
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label text-dark" asp-for="JobLocation">ที่อยู่ : </label>
+                        <input class="form-control" type="text" asp-for="JobLocation" autocomplete="off" onchange="StyleRemove(this.id)">
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label class="form-label h5 text-dark pt-2 m-0">สินค้าที่ใช้ : </label>
+                    </div>
+                    <div class="col-lg-10 text-center">
+                        <a class="btn btn-success w-100 shadow" onclick="ShowProductPopup('@Url.Action("StockModal", "JobDetail")', 'รายการสินค้าทั้งหมดที่มีอยู่ในสต๊อก' , 'CreateJob')">
+                            <i class="fa-solid fa-box-open"></i>&nbsp; เลือกรายการสินค้า
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <input class="bg-warning" id="StringProducts" asp-for="StringProducts" type="hidden">
+                <table class="table table-sm table-borderless" style="width: 100%;" id="DisplayProduct">
+                    <thead>
+                        <tr class="bg-warning bg-opacity-25">
+                            <th class="col-7">รายการสินค้าในบิล</th>
+                            <th class="col-1 text-end">จำนวน</th>
+                            <th class="col-2 text-end">ราคารวม</th>
+                            <th class="col-2 text-center">แก้ไข</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="bg-warning bg-opacity-25">
+                            <th class="col-7 text-end">ยอดรวม + ค่าแรง</th>
+                            <th id="TotalNumber" class="col-1 text-end">0 ชิ้น</th>
+                            <th id="TotalPrice" class="col-2 text-end">0 บาท</th>
+                            <th class="col-2"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br> <br>
+                <div class="text-end">
+                    <a class="btn btn-danger shadow" asp-controller="JobDetail" asp-action="JobPreview"><i class="fa-regular fa-circle-left"></i> กลับหน้าหลัก</a>
+                    <button type="submit" class="btn btn-success shadow" asp-controller="JobDetail" asp-action="StoreJobDetail">
+                        <i class="fa-regular fa-floppy-disk"></i> เปิดบิลใหม่
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

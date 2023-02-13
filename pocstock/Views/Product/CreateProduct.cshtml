@@ -1,0 +1,86 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "CreateProduct";
+    Layout = null;
+}
+
+<div class="row">
+    <div >
+        <form asp-controller="Product" asp-action="CreateProduct">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">ชื่อสินค้า : </label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="CostPrice" class="control-label">ราคาซื้อ : </label>
+                <input asp-for="CostPrice" class="form-control" required />
+                <span asp-validation-for="CostPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="SellingPrice" class="control-label">ราคาขาย : </label>
+                <input asp-for="SellingPrice" class="form-control" required />
+                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="ProductCount" class="control-label">จำนวนสินค้าที่เพิ่ม : </label>
+                <input asp-for="ProductCount" value="0" class="form-control" />
+                <span asp-validation-for="ProductCount" class="text-danger"></span>
+            </div>
+            <br>
+            <hr>
+            <div class="form-group text-end">
+                <button type="submit" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> เพิ่มสินค้า</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<br>
+<h1>Create Product</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Product" asp-action="CreateProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="CostPrice" class="control-label">Cost Price</label>
+                <input asp-for="CostPrice" class="form-control" />
+                <span asp-validation-for="CostPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="SellingPrice" class="control-label">Selling Price</label>
+                <input asp-for="SellingPrice" class="form-control" />
+                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="Number" class="control-label"></label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" />
+                <a asp-action="DashBoard" class="btn btn-primary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

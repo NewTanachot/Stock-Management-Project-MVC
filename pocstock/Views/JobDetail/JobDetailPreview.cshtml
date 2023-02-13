@@ -1,0 +1,310 @@
+﻿@model JobDetail
+
+@{
+    ViewData["Title"] = "Bill Detail";
+
+    int StatusInput = 0;
+
+    int TotalCount = 0;
+    int TotalPrice = Model.JobWage;
+
+    int PrintTotalCount = 0;
+    int PrintTotalPrice = Model.JobWage;
+
+    // For Printing Section
+    string TableSize = string.Empty;
+
+    if (Model.JobProducts.Count > 18)
+    {
+        TableSize = "table-sm";
+    }
+}
+
+<div class="card mb-4">
+    <div class="card-header text-center bg-primary bg-opacity-75">
+        <h3 class="m-0 text-white">Control Panel</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3 text-start align-self-sm-center">
+                <a class="btn btn-secondary shadow" asp-controller="JobDetail" asp-action="JobPreview"><i class="fa-solid fa-delete-left"></i> กลับหน้าหลัก</a>
+            </div>
+            <div class="col-9 align-self-sm-center text-end">
+                <a class="btn btn-outline-danger border-0" onclick="ShowInPopup('@Url.Action("DeleteJobDetail", "JobDetail", new{JobId = Model.JobId})', 'ลบบิล')">
+                    <i class="fa-regular fa-trash-can"></i> ลบบิล
+                </a>
+                <a class="btn btn-outline-warning opacity-100 border-0" asp-controller="JobDetail" asp-action="EditJobDetail" asp-route-JobId="@Model.JobId">
+                    <i class="fa-regular fa-pen-to-square"></i> แก้ไขบิล
+                </a>
+                <a class="btn btn-success shadow" asp-controller="File" asp-action="GenerateExcelInvoice" asp-route-JobId="@Model.JobId">
+                    <i class="fa-solid fa-file-excel"></i> Excel
+                </a>
+                <a class="btn btn-primary opacity-75 shadow" onclick="PrintJobDetail('ใบเสนอราคา')"><i class="fa-solid fa-print"></i> พิมพ์ใบเสนอราคา</a>
+                <a class="btn btn-dark opacity-75 shadow" onclick="PrintJobDetail('บิลเงินสด')"><i class="fa-solid fa-print"></i> พิมพ์บิลเงินสด</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card rounded shadow">
+    <div class="card-header text-center bg-primary bg-opacity-75">
+        <h3 class="m-0 text-white FontForInvoice">บิล / ใบเสนอราคา</h3>
+        <p class="m-0 text-white FontForInvoice">Invoice No : <span class="user-select-all">@Model.JobId</span></p>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.CustomerName))
+                {
+                    <h5 class="FontForInvoice">ลูกค้า: <span class="text-success FontForInvoice">@Model.CustomerName</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">ลูกค้า: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.JobDescription))
+                {
+                    <h5 class="FontForInvoice">รายละเอียด: <span class="text-success FontForInvoice">@Model.JobDescription</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">รายละเอียด: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5 class="FontForInvoice">วันที่: <span class="text-success FontForInvoice">@Model.StringDisplayDate</span></h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.CompanyName))
+                {
+                    <h5 class="FontForInvoice">บริษัท: <span class="text-success FontForInvoice">@Model.CompanyName</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">บริษัท: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.CustomerName))
+                {
+                    <h5 class="FontForInvoice">ลูกค้า: <span class="text-success FontForInvoice">@Model.CustomerName</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">ลูกค้า: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.CustomerPhoneNumber))
+                {
+                    <h5 class="FontForInvoice">โทร: <span class="text-success FontForInvoice">@Model.CustomerPhoneNumber</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">โทร: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                @if (!string.IsNullOrEmpty(Model.TaxId))
+                {
+                    <h5 class="FontForInvoice">เลขผู้เสียภาษี: <span class="text-success FontForInvoice">@Model.TaxId</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">เลขผู้เสียภาษี: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+            <div class="col-md-8 mb-3">
+                @if (!string.IsNullOrEmpty(Model.JobLocation))
+                {
+                    <h5 class="FontForInvoice">ที่อยู่: <span class="text-success FontForInvoice">@Model.JobLocation</span></h5>
+                }
+                else
+                {
+                    <h5 class="FontForInvoice">ที่อยู่: <span class="text-success FontForInvoice">-</span></h5>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 py-1">
+                <h5 class="FontForInvoice">จัดการสถานะ :</h5>
+            </div>
+            <div class="col-sm-8 mb-3">
+                <select class="form-select FontForInvoice" asp-for="@StatusInput" onchange="UpdateJobStatus('@Model.JobId', this.value)">
+                    @foreach (var item in Model.JobDisplayStatus)
+                    {
+                        if (item.JobStatusId == Model.JobStatusId)
+                        {
+                            <option selected class="FontForInvoice" value="@item.JobStatusId">@item.JobStatusName</option>
+                        }
+                        else
+                        {
+                            <option class="FontForInvoice" value="@item.JobStatusId">@item.JobStatusName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="text-center align-middle table-primary">
+                    <th class="col-1 FontForInvoice">จำนวน<br>(ชิ้น)</th>
+                    <th class="col FontForInvoice">สินค้า</th>
+                    <th class="col-1 FontForInvoice">หน่วยละ<br>(บาท)</th>
+                    <th class="col-1 FontForInvoice">จำนวนเงิน<br>(บาท)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center"></td>
+                    <td class="FontForInvoice">ค่าบริการรวมทั้งหมด</td>
+                    <td class="text-center FontForInvoice"></td>
+                    <td class="text-center FontForInvoice">@string.Format("{0:n0}", Model.JobWage)</td>
+                </tr>
+
+                @foreach (var item in Model.JobProducts)
+                {
+                    var SumPrice = item.ProductCount * item.ProductPrice;
+                    TotalCount += item.ProductCount;
+                    TotalPrice += item.ProductPrice * item.ProductCount;
+
+                    <tr>
+                        <td class="text-center FontForInvoice">@item.ProductCount</td>
+                        <td class="FontForInvoice">@item.ProductName</td>
+                        <td class="text-center FontForInvoice">@string.Format("{0:n0}", item.ProductPrice)</td>
+                        <td class="text-center FontForInvoice">@string.Format("{0:n0}", SumPrice)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="text-center table-primary">
+                    <th class="FontForInvoice">รวม : @TotalCount</th>
+                    <th class="FontForInvoice"></th>
+                    <th class="FontForInvoice">รวมเงิน</th>
+                    <th class="FontForInvoice">@string.Format("{0:n0}", TotalPrice)</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+@*Print Invoice*@
+<div id="PrintContent" style="display: none;">
+    <div class="card">
+        <div class="card-body mt-2">
+            <div class="row">
+                <div class="col-2">
+                    <img style="width: 100px;" src="~/img/TJP.png" />
+                </div>
+                <div class="col py-4 text-start">
+                    <h5 class="mt-2 FontforPrinting">ธ.เจริญภัณฑ์เทรดดิ้ง(TJP) 144 ซ.เรวดี6 ต.ตลาดขวัญ อ.เมือง</h5>
+                    <h5 class="FontforPrinting">จ.นนทบุรี โทร.099-320-2556</h5>
+                </div>
+            </div>
+
+            <div class="row text-center my-4">
+                <h3 id="PrintHeader" class="m-0 FontforPrinting"></h3>
+            </div>
+
+            <div class="row">
+                <div class="col-8 mb-2"></div>
+                <div class="col-4 mb-2">
+                    <p class="FontforPrinting">@Model.DisplayDateForPrinting</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 mb-2">
+                    <p class="FontforPrinting">เรื่อง: &nbsp;ใบเสนอราคา</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.CustomerName))
+                    {
+                        <p class="FontforPrinting">ชื่อลูกค้า: &nbsp;@Model.CustomerName</p>
+                    }
+                    else
+                    {
+                        <p class="FontforPrinting">ชื่อลูกค้า: &nbsp;-</p>
+                    }
+                </div>
+                <div class="col-4 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.CustomerPhoneNumber))
+                    {
+                        <p class="FontforPrinting">โทร: &nbsp;@Model.CustomerPhoneNumber</p>
+                    }
+                    else
+                    {
+                        <p class="FontforPrinting">รายละเอียดบิล: &nbsp;-</p>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.JobLocation))
+                    {
+                        <p class="FontforPrinting">ที่อยู่: &nbsp;@Model.JobLocation</p>
+                    }
+                    else
+                    {
+                        <p class="FontforPrinting">ที่อยู่: &nbsp;-</p>
+                    }
+                </div>
+                <div class="col-4 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.TaxId))
+                    {
+                        <p class="FontforPrinting">เลขผู้เสียภาษี: &nbsp;@Model.TaxId</p>
+                    }
+                    else
+                    {
+                        <p class="FontforPrinting">เลขผู้เสียภาษี: &nbsp;-</p>
+                    }
+                </div>
+            </div>
+            <table class="table @TableSize table-bordered">
+                <tbody>
+                    <tr class="text-center align-middle table-secondary">
+                        <td class="col-1 FontforPrinting">จำนวน (ชิ้น)</td>
+                        <td class="col FontforPrinting">สินค้า</td>
+                        <td class="col-1 FontforPrinting">ชิ้นละ (บาท)</td>
+                        <td class="col-1 FontforPrinting">ราคา (บาท)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="FontforPrinting">ค่าบริการรวมทั้งหมด</td>
+                        <td class="text-center"></td>
+                        <td class="text-center FontforPrinting">@string.Format("{0:n0}", Model.JobWage)</td>
+                    </tr>
+
+                    @foreach (var item in Model.JobProducts)
+                    {
+                        var SumPrice = item.ProductCount * item.ProductPrice;
+                        PrintTotalCount += item.ProductCount;
+                        PrintTotalPrice += item.ProductPrice * item.ProductCount;
+
+                        <tr>
+                            <td class="text-center FontforPrinting">@item.ProductCount</td>
+                            <td class="FontforPrinting">@item.ProductName</td>
+                            <td class="text-center FontforPrinting">@string.Format("{0:n0}", item.ProductPrice)</td>
+                            <td class="text-center FontforPrinting">@string.Format("{0:n0}", SumPrice)</td>
+                        </tr>
+                    }
+
+                    <tr class="text-center table-secondary">
+                        <th class="FontforPrinting">@PrintTotalCount</th>
+                        <td></td>
+                        <th class="FontforPrinting">รวม</th>
+                        <th class="FontforPrinting">@string.Format("{0:n0}", PrintTotalPrice)</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

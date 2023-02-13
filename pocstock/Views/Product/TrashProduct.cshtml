@@ -1,0 +1,47 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Trash Product";
+    Layout = null;
+}
+
+<div class="row">
+    <div>
+        <table id="TrashTable" class="table table-bordered">
+            <thead>
+                <tr class="table-secondary text-center">
+                    <th class="col">รายการสินค้าในถังขยะ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr> 
+                        <td>
+                            <div class="row">
+                                <div class="col text-start pt-2 text-secondary">
+                                    @item.Name
+                                </div>
+                                <div class="col text-end">
+                                    <a class="btn btn-success" asp-controller="Product" asp-action="RestoreProduct" asp-route-id="@item.Id"><i class="fa-solid fa-recycle"></i> กู้คืนข้อมูล</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*<script>
+    $('#TrashTable').DataTable({
+        lengthMenu: [
+            [5, 10, 25, 50],
+            [5, 10, 25, 50],
+        ],
+
+        "order": false,
+        "sorting" : false
+    });
+</script>*@
